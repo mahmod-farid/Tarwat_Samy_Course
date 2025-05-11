@@ -188,7 +188,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
             ),
 
 
-            SizedBox( height: 51),
+            SizedBox( height: 50),
             //الزرار اللي في الاخر
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
