@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tharwat_samy/cubit/counter_cubit.dart';
+import 'package:tharwat_samy/cubit/counter_state.dart';
 
 void main() {
   runApp( PonintsCounter());
 }
 
-class PonintsCounter extends StatefulWidget {
-  @override
-  State<PonintsCounter> createState() => _PonintsCounterState();
-}
-
-class _PonintsCounterState extends State<PonintsCounter> {
- int teamAPoints = 0;
-
- int teamBPoints = 0;
-
+class PonintsCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return BlocProvider(
+      create:(context) => CounterCubit(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomePage(),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<CounterCubit , CounterState>(builder: (context , state) {
+      return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red[900],
           title: Text('Point Counter',style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.w500
           )
-            ),
+          ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +49,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
                       ),
                     ),
                     Text(
-                      '$teamAPoints',
+                      '${BlocProvider.of<CounterCubit>(context).teamAPoints}',
                       style: TextStyle(
                         fontSize: 160,
                       ),
@@ -52,11 +59,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
                           backgroundColor: Colors.red[900],
                           minimumSize: Size(150, 50)),
                       onPressed: () {
-
-                        setState(() {
-                          teamAPoints++;
-                        });
-                        print(teamAPoints);
+                        BlocProvider.of<CounterCubit>(context).TeamIncrement(team: "A", buttonNumber: 1);
                       },
                       child: Text(
                         'Add 1 Point',
@@ -73,9 +76,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
                           backgroundColor: Colors.red[900],
                           minimumSize: Size(150, 50)),
                       onPressed: () {
-                        setState(() {
-                          teamAPoints +=2;
-                        });
+                        BlocProvider.of<CounterCubit>(context).TeamIncrement(team: "A", buttonNumber: 2);
                       },
                       child: Text(
                         'Add 2 Point',
@@ -92,9 +93,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
                           backgroundColor: Colors.red[900],
                           minimumSize: Size(150, 50)),
                       onPressed: () {
-                        setState(() {
-                          teamAPoints +=3;
-                        });
+                        BlocProvider.of<CounterCubit>(context).TeamIncrement(team: "A", buttonNumber: 3);
                       },
                       child: Text(
                         'Add 3 Point',
@@ -123,7 +122,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
                       ),
                     ),
                     Text(
-                      '$teamBPoints',
+                      '${BlocProvider.of<CounterCubit>(context).teamBPoints}',
                       style: TextStyle(
                         fontSize: 160,
                       ),
@@ -135,9 +134,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
                           backgroundColor: Colors.red[900],
                           minimumSize: Size(150, 50)),
                       onPressed: () {
-                        setState(() {
-                          teamBPoints +=1;
-                        });
+                        BlocProvider.of<CounterCubit>(context).TeamIncrement(team: "B", buttonNumber: 1);
                       },
                       child: Text(
                         'Add 1 Point',
@@ -154,9 +151,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
                           backgroundColor: Colors.red[900],
                           minimumSize: Size(150, 50)),
                       onPressed: () {
-                        setState(() {
-                          teamBPoints +=2;
-                        });
+                        BlocProvider.of<CounterCubit>(context).TeamIncrement(team: "B", buttonNumber: 2);
                       },
                       child: Text(
                         'Add 2 Point',
@@ -173,9 +168,7 @@ class _PonintsCounterState extends State<PonintsCounter> {
                           backgroundColor: Colors.red[900],
                           minimumSize: Size(150, 50)),
                       onPressed: () {
-                        setState(() {
-                          teamBPoints +=3;
-                        });
+                        BlocProvider.of<CounterCubit>(context).TeamIncrement(team: "B", buttonNumber: 3);
                       },
                       child: Text(
                         'Add 3 Point',
@@ -196,19 +189,18 @@ class _PonintsCounterState extends State<PonintsCounter> {
                   minimumSize: Size(150, 50),
                 ),
                 onPressed: () {
-                  setState(() {
-                    teamAPoints = 0;
-                    teamBPoints = 0;
-                  });
                 },
                 child: Text(
                   'Reset',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 )),
-               SizedBox(height: 11,)
+            SizedBox(height: 11,)
           ],
         ),
-      ),
-    );
+      );
+    }, listener:(context , state) {
+
+    });
   }
 }
+
